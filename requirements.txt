@@ -1,0 +1,10 @@
+Flask==1.1.2
+Flask-Bcrypt==0.7.1
+Flask-Login==0.5.0
+Flask-SQLAlchemy==2.5.1
+bcrypt==3.2.0
+Werkzeug==1.0.1
+psycopg2==2.9.3
+pycparser==2.20
+python-dotenv==0.16.0
+SQLAlchemy==1.4.3
