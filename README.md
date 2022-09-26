@@ -12,7 +12,8 @@
 - hit the Postman for API repsonses
 
 - to create db open any sql terminal or GUI to create tables
-`
+
+
 CREATE TABLE user2
 (
   id SERIAL PRIMARY KEY,
@@ -49,4 +50,5 @@ CREATE TABLE cart
   user_id integer REFERENCES user2(id),
   item_id integer REFERENCES items(id)
 );
-`
+
+<img width="347" alt="DB_design_diagram" src="https://user-images.githubusercontent.com/60216611/192396512-5a222263-11b4-46ee-8e87-975707eff6e1.png">
