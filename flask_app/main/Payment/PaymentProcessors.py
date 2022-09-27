@@ -7,6 +7,10 @@ from flask_app.main.constants import (
     PAYMENT_PAYPAL
 )
 
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 class DebitPaymentProcessor(BasePaymentProcessor):
 
     def __init__(self, security_code, authorizer: BaseAuthorizer):
@@ -16,8 +20,8 @@ class DebitPaymentProcessor(BasePaymentProcessor):
     def pay(self, order):
         if not self.authorizer.is_authorized():
             raise Exception("Not authorized")
-        print("Processing debit payment type")
-        print(f"Verifying security code: {self.security_code}")
+        logger.info("Processing debit payment type")
+        logger.info(f"Verifying security code: {self.security_code}")
         order.order_status = STATUS_SUCCESS
 
 class CreditPaymentProcessor(BasePaymentProcessor):
@@ -27,8 +31,8 @@ class CreditPaymentProcessor(BasePaymentProcessor):
         self.authorizer = authorizer
 
     def pay(self, order):
-        print("Processing credit payment type")
-        print(f"Verifying security code: {self.security_code}")
+        logger.info("Processing credit payment type")
+        logger.info(f"Verifying security code: {self.security_code}")
         order.order_status = STATUS_SUCCESS
 
 class PaypalPaymentProcessor(BasePaymentProcessor):
@@ -40,8 +44,8 @@ class PaypalPaymentProcessor(BasePaymentProcessor):
     def pay(self, order):
         if not self.authorizer.is_authorized():
             raise Exception("Not authorized")
-        print("Processing paypal payment type")
-        print(f"Using email address: {self.email_address}")
+        logger.info("Processing paypal payment type")
+        logger.info(f"Using email address: {self.email_address}")
         order.order_status = STATUS_SUCCESS
 
 PAYMENT_MAPPING = {

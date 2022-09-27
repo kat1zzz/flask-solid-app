@@ -15,6 +15,10 @@ user = Blueprint('user', __name__)
 
 from flask_app.models import user2, cart , items
 
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 @user.route("/register2", methods=["GET", "POST"])
 def register2():
     body = request.get_json()
@@ -49,6 +53,7 @@ def login2():
 @login_required
 def profile():
     if current_user:
+        logger.info("\n\nUser Profile is fetched\n\n")
         return jsonify(current_user.to_string())
 
 @user.route('/logout')

@@ -5,17 +5,21 @@ from flask_app.main.constants import (
     AUTH_ROBOT
 )
 
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 class Authorizer_SMS(BaseAuthorizer):
     def __init__(self):
         self.TEMPLATE_NAME = AUTH_SMS
         self.authorized = False
 
     def verify_code(self, code):
-        print(f"Verifying SMS code {code}")
+        logger.info(f"Verifying SMS code {code}")
         self.authorized = True
 
     def verify(self, code):
-        print(f"Verifying SMS code {code}")
+        logger.info(f"Verifying SMS code {code}")
         self.verify_code(code)
 
     def is_authorized(self) -> bool:
@@ -28,11 +32,11 @@ class Authorizer_Email(BaseAuthorizer):
         self.authorized = False
 
     def verify_code(self, code):
-        print(f"Verifying Emailauth code {code}")
+        logger.info(f"Verifying Emailauth code {code}")
         self.authorized = True
 
     def verify(self, code):
-        print(f"Verifying Email auth code {code}")
+        logger.info(f"Verifying Email auth code {code}")
         self.verify_code(code)
 
     def is_authorized(self) -> bool:
@@ -48,7 +52,7 @@ class Authorizer_Robot(BaseAuthorizer):
         self.authorized = True
 
     def verify(self, code):
-        print(f"Verifying robot")
+        logger.info(f"Verifying robot")
         self.not_a_robot()
 
     def is_authorized(self) -> bool:
