@@ -18,7 +18,7 @@ class DebitPaymentProcessor(BasePaymentProcessor):
             raise Exception("Not authorized")
         print("Processing debit payment type")
         print(f"Verifying security code: {self.security_code}")
-        order.status = STATUS_SUCCESS
+        order.order_status = STATUS_SUCCESS
 
 class CreditPaymentProcessor(BasePaymentProcessor):
 
@@ -29,7 +29,7 @@ class CreditPaymentProcessor(BasePaymentProcessor):
     def pay(self, order):
         print("Processing credit payment type")
         print(f"Verifying security code: {self.security_code}")
-        order.status = STATUS_SUCCESS
+        order.order_status = STATUS_SUCCESS
 
 class PaypalPaymentProcessor(BasePaymentProcessor):
 
@@ -42,7 +42,7 @@ class PaypalPaymentProcessor(BasePaymentProcessor):
             raise Exception("Not authorized")
         print("Processing paypal payment type")
         print(f"Using email address: {self.email_address}")
-        order.status = STATUS_SUCCESS
+        order.order_status = STATUS_SUCCESS
 
 PAYMENT_MAPPING = {
     PAYMENT_CREDIT: CreditPaymentProcessor,
