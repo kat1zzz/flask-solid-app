@@ -14,6 +14,7 @@
 # Create DB Models
 - to create db open any sql terminal or GUI to create tables
 
+CREATE db shivamk
 
 CREATE TABLE user2
 (
