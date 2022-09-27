@@ -76,6 +76,21 @@ CREATE TABLE cart
 
 /place_order POST //place order containing all cart items
 
+Note - for place_order payment method and authentication is selected based on valid user input else it will throw error
+`{
+    "user_id": 1,
+    "payment": {
+        "payment_method": {
+            "type": "credit",
+            "code": "myemail@email.com"
+        },
+        "auth_method": {
+            "auth": "email",
+            "code": 123456
+        }
+    }
+}`
+
 # SOLID Principles demonstration used in this project.
   Visit [PaymenthProcessors](https://github.com/kat1zzz/flask-solid-app/tree/master/flask_app/main/Payment) and [Authrizors](https://github.com/kat1zzz/flask-solid-app/tree/master/flask_app/main/Authorizer) classes for easy understanding.
 
