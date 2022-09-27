@@ -11,6 +11,7 @@
 - Open the terminal and run `python main.py` command
 - hit the Postman for API repsonses
 
+# Create DB Models
 - to create db open any sql terminal or GUI to create tables
 
 
@@ -50,5 +51,18 @@ CREATE TABLE cart
   user_id integer REFERENCES user2(id),
   item_id integer REFERENCES items(id)
 );
+# Whole DB Schema
 
 <img width="347" alt="DB_design_diagram" src="https://user-images.githubusercontent.com/60216611/192396512-5a222263-11b4-46ee-8e87-975707eff6e1.png">
+
+
+# All Endpoints
+/register2 POST {"email": email, "username": text, "password": text}
+/login2 GET {"username": text, "password": text}
+/logout GET
+/profile GET Response-> user profile
+/get_items GET //get all items listed
+/add_items POST {"items": []} //add items to be listed
+/add_items_cart POST {"items": []} // add items to user cart
+/get_items_cart GET //get all current items in cart
+/place_order POST //place order containing all cart items
