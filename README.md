@@ -58,11 +58,20 @@ CREATE TABLE cart
 
 # All Endpoints
 /register2 POST {"email": email, "username": text, "password": text}
+
 /login2 GET {"username": text, "password": text}
+
 /logout GET
+
 /profile GET Response-> user profile
+
 /get_items GET //get all items listed
+
 /add_items POST {"items": []} //add items to be listed
+
 /add_items_cart POST {"items": []} // add items to user cart
+
 /get_items_cart GET //get all current items in cart
+
 /place_order POST //place order containing all cart items
+
