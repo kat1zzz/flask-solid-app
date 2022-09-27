@@ -9,7 +9,7 @@ from flask_app.main.utils import (
 )
 
 from flask_app import db, bcrypt
-from flask_login import login_manager, login_user, logout_user, login_required, current_user
+from flask_login import login_user, logout_user, login_required, current_user
 
 user = Blueprint('user', __name__)
 
@@ -18,11 +18,16 @@ from flask_app.models import user2, cart , items
 @user.route("/register2", methods=["GET", "POST"])
 def register2():
     body = request.get_json()
-    user = user2.query.filter_by(email=body.get('email')).first()
+    email = body.get('email')
+    user = user2.query.filter_by(email=email).first()
     if(user):
-        return " user \'{}\' is already registered".format(user.email)
+        raise ValueError(" user \'{}\' is already registered".format(user.email))
     else:
-        user = user2(email=body.get('email'))
+        name = body.get('name')
+        username = body.get('username')
+        password = body.get('password')
+        password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+        user = user2(email=email, name=name, username=username, password=password_hash)
         db.session.add(user)
         db.session.commit()
         return "user with email = {} is registered".format(user.email)
@@ -31,13 +36,20 @@ def register2():
 @user.route("/login2", methods=["GET", "POST"])
 def login2():
     body = request.get_json()
-    email = body.get('email')
-    if(email):
-        user = user2.query.filter_by(email=email).first()
-        login_user(user,force=True)
-        return "success : {}, {}, {}".format(current_user.id, current_user.email, current_user.name)
+    username = body.get('username')
+    password = body.get('password')
+    user = user2.query.filter_by(username=username).first()
+    if(user and bcrypt.check_password_hash(user.password, password)):
+        login_user(user)
+        return "successfully logged in"
     else:
-        return "error in login user", 500
+        return "username or passowrd doesn't match", 500
+
+@user.route("/profile", methods=["GET"])
+@login_required
+def profile():
+    if current_user:
+        return jsonify(current_user.to_string())
 
 @user.route('/logout')
 @login_required
@@ -77,7 +89,7 @@ def add_items():
 def add_items_cart():
     body = request.get_json()
     try:
-        user_id = body.get('user_id') #current_user.id
+        user_id = current_user.id
         items = body.get('items',[])
         db_carts = []
         for item in items:
@@ -95,7 +107,7 @@ def add_items_cart():
 @login_required
 def get_items_cart(user_id=None):
     try:
-        user_id = request.args.get('user_id')
+        user_id = current_user.id #request.args.get('user_id')
         items_list = get_cart_items(user_id)
         return jsonify({"cart_items": items_list})
     except Exception as e:
@@ -105,12 +117,12 @@ def get_items_cart(user_id=None):
 @login_required
 def place_order():
     body = request.get_json()
-    user_id = body.get('user_id') #current_user.id
+    user_id = current_user.id #body.get('user_id')
     payment_body = body.get('payment')
     try:
         if not check_cart_items_exist(user_id):
             raise ValueError("Cart is empty, cant place")
-        place_order_items(user_id, payment_body)
+        place_order_items(payment_body)
     except Exception as e:
         return str(e), 500
 

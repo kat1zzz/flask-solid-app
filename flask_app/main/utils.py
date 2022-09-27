@@ -1,7 +1,7 @@
 from flask_app.main.Authorizer.Authorizers import AUTH_MAPPING
 from flask_app.main.Payment.PaymentProcessors import PAYMENT_MAPPING
 from flask_app.models import cart, items, orders, payment
-# from flask_login import current_user
+from flask_login import current_user
 from flask_app import db
 from flask_app.main.constants import (
     AUTH_METHODS,
@@ -12,7 +12,7 @@ from flask_app.main.constants import (
     STATUS_SUCCESS
 )
 
-def place_order_items(user_id=None, payment_body={}):
+def place_order_items(payment_body={}):
     payment_method = payment_body.get("payment_method")
     payment_type, authorizer_code = parse_payment_type(payment_method)
     auth_method = payment_body.get("auth_method")
@@ -22,7 +22,7 @@ def place_order_items(user_id=None, payment_body={}):
     db.session.add(curr_payment)
     db.session.commit()
 
-    # user_id = current_user.id
+    user_id = current_user.id
 
     curr_order = orders(user_id=user_id, payment_id=curr_payment.id, order_status="open")
     try:

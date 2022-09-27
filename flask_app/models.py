@@ -1,3 +1,4 @@
+from enum import unique
 from flask_app.main.constants import DEFAULT_AUTH, STATUS_PENDING
 from flask_app import db, login_manager
 from flask_login import UserMixin
@@ -10,8 +11,15 @@ class user2(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String, unique=True, nullable=False)
     name = db.Column(db.String, nullable=False)
-    username = db.Column(db.String, nullable=True)
-    password = db.Column(db.String(400), nullable=True)
+    username = db.Column(db.String, nullable=False)
+    password = db.Column(db.String(400), nullable=False)
+    def to_string(self):
+        return {
+            "id": self.id,
+            "email": self.email,
+            "name": self.name,
+            "username": self.username
+        }
 
 class orders(db.Model):
     id = db.Column(db.Integer, primary_key=True)
